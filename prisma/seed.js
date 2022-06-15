@@ -4,36 +4,93 @@ const prisma = new PrismaClient();
 const exercises = require("../exercises.json");
 
 async function seed() {
-  const equipments = await createEquipments();
-  const bodyParts = await createTargets();
+  await createEquipments();
+  await createBodyParts();
+  await createTargets();
+  await createExercises();
 
   process.exit(0);
 }
 
 async function createEquipments() {
-  const equipments = [];
+  const equipmentsData = [];
   exercises.forEach((exercise) => {
-    equipments.push({ name: exercise.equipment });
+    equipmentsData.push({ name: exercise.equipment });
   });
 
   const createdEquipments = await prisma.equipment.createMany({
-    data: equipments,
+    data: equipmentsData,
     skipDuplicates: true,
   });
   return createdEquipments;
 }
 
-async function createTargets() {
-  const targets = [];
+async function createBodyParts() {
+  const bodyPartsData = [];
   exercises.forEach((exercise) => {
-    targets.push({ name: exercise.target });
+    bodyPartsData.push({ name: exercise.bodyPart });
+  });
+
+  const createdbodyParts = await prisma.bodyPart.createMany({
+    data: bodyPartsData,
+    skipDuplicates: true,
+  });
+  return createdbodyParts;
+}
+
+async function createTargets() {
+  const uniqueBodyParts = await prisma.bodyPart.findMany({});
+  const bodyPartsMap = {};
+
+  uniqueBodyParts.forEach((bodyPart) => {
+    bodyPartsMap[bodyPart.name] = bodyPart.id;
+  });
+
+  const targetsData = [];
+  exercises.forEach((exercise) => {
+    targetsData.push({
+      name: exercise.target,
+      bodyPartId: bodyPartsMap[exercise.bodyPart],
+    });
   });
 
   const createdTargets = await prisma.target.createMany({
-    data: targets,
+    data: targetsData,
     skipDuplicates: true,
   });
   return createdTargets;
+}
+
+async function createExercises() {
+  const uniqueEquipments = await prisma.equipment.findMany({});
+  const equipmentsMap = {};
+
+  uniqueEquipments.forEach((equipment) => {
+    equipmentsMap[equipment.name] = equipment.id;
+  });
+
+  const uniqueTargets = await prisma.target.findMany({});
+  const targetsMap = {};
+
+  uniqueTargets.forEach((target) => {
+    targetsMap[target.name] = target.id;
+  });
+
+  const exercisesData = [];
+  exercises.forEach((exercise) => {
+    exercisesData.push({
+      name: exercise.name,
+      demo: exercise.gifUrl,
+      equipmentId: equipmentsMap[exercise.equipment],
+      targetId: targetsMap[exercise.target],
+    });
+  });
+
+  const createdExercises = await prisma.exercise.createMany({
+    data: exercisesData,
+    skipDuplicates: true,
+  });
+  return createdExercises;
 }
 
 seed()

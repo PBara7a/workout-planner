@@ -1,6 +1,6 @@
 const exercises = require("./exercises.json");
 
 const filtered = exercises.filter(
-  (el) => el.target === "cardiovascular system"
+  (el) => el.equipment === "elliptical machine"
 );
-console.log(filtered);
+console.log(filtered.length);
