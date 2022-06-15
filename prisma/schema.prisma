@@ -39,7 +39,7 @@ model Target {
 
 model BodyPart {
   id          Int       @id  @default(autoincrement())
-  target      Target    @relation(fields: [targetId], references: [id])
+  target      Target?   @relation(fields: [targetId], references: [id])
   targetId    Int
   name        String    @unique
   createdAt   DateTime  @default(now())
