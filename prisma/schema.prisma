@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Exercise {
+  id          Int       @id  @default(autoincrement())
+  name        String    @unique
+  demo        String
+  equipment   Equipment @relation(fields: [equipmentId], references: [id])
+  equipmentId Int
+  target      Target    @relation(fields: [targetId], references: [id])
+  targetId    Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Equipment {
+  id          Int       @id  @default(autoincrement())
+  exercises   Exercise[]
+  name        String    @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Target {
+  id          Int       @id  @default(autoincrement())
+  exercises   Exercise[]
+  bodyPart    BodyPart?
+  name        String    @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model BodyPart {
+  id          Int       @id  @default(autoincrement())
+  target      Target    @relation(fields: [targetId], references: [id])
+  targetId    Int
+  name        String    @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
