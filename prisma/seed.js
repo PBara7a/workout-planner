@@ -1,5 +1,4 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const dbClient = require("../src/utils/prisma");
 
 const exercises = require("../exercises.json");
 
@@ -18,7 +17,7 @@ async function createEquipments() {
     equipmentsData.push({ name: exercise.equipment });
   });
 
-  const createdEquipments = await prisma.equipment.createMany({
+  const createdEquipments = await dbClient.equipment.createMany({
     data: equipmentsData,
     skipDuplicates: true,
   });
@@ -31,7 +30,7 @@ async function createBodyParts() {
     bodyPartsData.push({ name: exercise.bodyPart });
   });
 
-  const createdbodyParts = await prisma.bodyPart.createMany({
+  const createdbodyParts = await dbClient.bodyPart.createMany({
     data: bodyPartsData,
     skipDuplicates: true,
   });
@@ -39,7 +38,7 @@ async function createBodyParts() {
 }
 
 async function createTargets() {
-  const uniqueBodyParts = await prisma.bodyPart.findMany({});
+  const uniqueBodyParts = await dbClient.bodyPart.findMany({});
   const bodyPartsMap = {};
 
   uniqueBodyParts.forEach((bodyPart) => {
@@ -54,7 +53,7 @@ async function createTargets() {
     });
   });
 
-  const createdTargets = await prisma.target.createMany({
+  const createdTargets = await dbClient.target.createMany({
     data: targetsData,
     skipDuplicates: true,
   });
@@ -62,14 +61,14 @@ async function createTargets() {
 }
 
 async function createExercises() {
-  const uniqueEquipments = await prisma.equipment.findMany({});
+  const uniqueEquipments = await dbClient.equipment.findMany({});
   const equipmentsMap = {};
 
   uniqueEquipments.forEach((equipment) => {
     equipmentsMap[equipment.name] = equipment.id;
   });
 
-  const uniqueTargets = await prisma.target.findMany({});
+  const uniqueTargets = await dbClient.target.findMany({});
   const targetsMap = {};
 
   uniqueTargets.forEach((target) => {
@@ -86,7 +85,7 @@ async function createExercises() {
     });
   });
 
-  const createdExercises = await prisma.exercise.createMany({
+  const createdExercises = await dbClient.exercise.createMany({
     data: exercisesData,
     skipDuplicates: true,
   });
@@ -96,6 +95,6 @@ async function createExercises() {
 seed()
   .catch(async (e) => {
     console.error(e);
-    await prisma.$disconnect();
+    await dbClient.$disconnect();
   })
   .finally(() => process.exit(1));
