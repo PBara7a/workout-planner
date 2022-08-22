@@ -79,7 +79,7 @@ async function createExercises() {
   exercises.forEach((exercise) => {
     exercisesData.push({
       name: exercise.name,
-      demo: exercise.gifUrl,
+      demo: exercise.gifUrl.match(/\d{4}/)[0],
       equipmentId: equipmentsMap[exercise.equipment],
       targetId: targetsMap[exercise.target],
     });

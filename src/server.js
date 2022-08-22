@@ -12,7 +12,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const exerciseRouter = require("./routers/exercise");
+const bodyRouter = require("./routers/body");
 
 app.use("/exercise", exerciseRouter);
+app.use("/body", bodyRouter);
 
 module.exports = app;
