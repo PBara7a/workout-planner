@@ -75,6 +75,13 @@ async function createExercises() {
     targetsMap[target.name] = target.id;
   });
 
+  const uniqueBodyParts = await dbClient.bodyPart.findMany({});
+  const bodyPartsMap = {};
+
+  uniqueBodyParts.forEach((bodyPart) => {
+    bodyPartsMap[bodyPart.name] = bodyPart.id;
+  });
+
   const exercisesData = [];
   exercises.forEach((exercise) => {
     exercisesData.push({
@@ -82,6 +89,7 @@ async function createExercises() {
       demo: exercise.gifUrl.match(/\d{4}/)[0],
       equipmentId: equipmentsMap[exercise.equipment],
       targetId: targetsMap[exercise.target],
+      bodyPartId: bodyPartsMap[exercise.bodyPart],
     });
   });
 

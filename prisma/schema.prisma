@@ -16,6 +16,8 @@ model Exercise {
   equipmentId Int
   target      Target    @relation(fields: [targetId], references: [id])
   targetId    Int
+  bodyPart    BodyPart  @relation(fields: [bodyPartId], references: [id])
+  bodyPartId  Int
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
@@ -40,6 +42,7 @@ model Target {
 
 model BodyPart {
   id          Int       @id  @default(autoincrement())
+  exercises   Exercise[]
   target      Target[]
   name        String    @unique
   createdAt   DateTime  @default(now())
