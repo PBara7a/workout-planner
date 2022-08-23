@@ -13,8 +13,10 @@ app.use(express.urlencoded({ extended: true }));
 
 const exerciseRouter = require("./routers/exercise");
 const bodyRouter = require("./routers/body");
+const equipmentRouter = require("./routers/equipment");
 
 app.use("/exercise", exerciseRouter);
 app.use("/body", bodyRouter);
+app.use("/equipment", equipmentRouter);
 
 module.exports = app;
