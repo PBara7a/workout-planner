@@ -53,8 +53,8 @@ model BodyPart {
 model Workout {
   id          Int       @id  @default(autoincrement())
   name        String    @unique
-  target      String?   @unique
-  notes       String?   @unique
+  target      String?   
+  notes       String?   
   exercises   Exercise[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt

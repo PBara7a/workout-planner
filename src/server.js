@@ -15,10 +15,12 @@ const dataRouter = require("./routers/data");
 const exerciseRouter = require("./routers/exercise");
 const bodyRouter = require("./routers/body");
 const equipmentRouter = require("./routers/equipment");
+const workoutRouter = require("./routers/workout");
 
 app.use("/data", dataRouter);
 app.use("/exercise", exerciseRouter);
 app.use("/body", bodyRouter);
 app.use("/equipment", equipmentRouter);
+app.use("/workout", workoutRouter);
 
 module.exports = app;
