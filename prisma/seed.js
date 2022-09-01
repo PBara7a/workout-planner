@@ -7,6 +7,7 @@ async function seed() {
   await createBodyParts();
   await createTargets();
   await createExercises();
+  await createWorkouts();
 
   process.exit(0);
 }
@@ -98,6 +99,70 @@ async function createExercises() {
     skipDuplicates: true,
   });
   return createdExercises;
+}
+
+async function createWorkouts() {
+  await dbClient.workout.create({
+    data: {
+      name: "Workout 1: Upperbody",
+      target: "Upperbody",
+      notes: "8-12 reps",
+      exercises: {
+        connect: [
+          { id: 99 },
+          { id: 475 },
+          { id: 481 },
+          { id: 581 },
+          { id: 1063 },
+        ],
+      },
+    },
+  });
+
+  await dbClient.workout.create({
+    data: {
+      name: "Workout 2: Lowerbody",
+      target: "Lowerbody",
+      notes: "8-12 reps",
+      exercises: {
+        connect: [
+          { id: 130 },
+          { id: 183 },
+          { id: 556 },
+          { id: 669 },
+          { id: 1318 },
+        ],
+      },
+    },
+  });
+
+  await dbClient.workout.create({
+    data: {
+      name: "Workout 3: Upperbody",
+      target: "Upperbody",
+      notes: "8-12 reps",
+      exercises: {
+        connect: [
+          { id: 102 },
+          { id: 107 },
+          { id: 131 },
+          { id: 191 },
+          { id: 648 },
+        ],
+      },
+    },
+  });
+
+  await dbClient.workout.create({
+    data: {
+      name: "Workout 4: Lowerbody",
+      target: "Lowerbody",
+      notes: "8-12 reps",
+      exercises: {
+        connect: [{ id: 130 }, { id: 451 }, { id: 699 }, { id: 1261 }],
+      },
+    },
+  });
 }
 
 seed()

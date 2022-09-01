@@ -4,7 +4,6 @@ const morgan = require("morgan");
 
 const app = express();
 app.disable("x-powered-by");
-const port = 3030;
 
 app.use(cors());
 app.use(morgan("dev"));
