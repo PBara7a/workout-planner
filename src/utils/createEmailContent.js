@@ -1,4 +1,5 @@
 const dbClient = require("./prisma");
+const demoUrls = require("./demoUrls.json");
 
 const createEmailContent = async (workoutId, recipient) => {
   const workout = await dbClient.workout.findUnique({
@@ -11,7 +12,12 @@ const createEmailContent = async (workoutId, recipient) => {
   });
 
   const exercisesHTML = workout.exercises
-    .map((exercise, i) => `<div>${i + 1}: ${exercise.name}</div>`)
+    .map(
+      (exercise, i) =>
+        `<div><h2>${i + 1}: ${exercise.name}</h2><img src=${
+          demoUrls[exercise.demo]
+        } alt="exercise demo" /></div>`
+    )
     .join("<br />");
 
   const msg = {
