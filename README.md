@@ -23,6 +23,35 @@ App built with React, Node.js, Express, Prisma and PostgreSQL.
 ## 2. API Spec
 
 <details>
+<summary><strong>POST /user</strong>
+</summary>
+
+<strong>Example body</strong>
+
+```sh
+{
+	"username": "test",
+	"password": "test1"
+}
+```
+
+<strong>Example response</strong>
+
+```sh
+{
+	"user": {
+		"id": 4,
+		"username": "test",
+		"password": "$2b$08$XSCitXp0EpxtDBX2ABRgY.lKm.UAzK5QYf3DlQjfHOB5CkMgLssMm",
+		"createdAt": "2022-09-07T15:44:57.468Z",
+		"updatedAt": "2022-09-07T15:44:57.469Z"
+	}
+}
+```
+
+</details>
+
+<details>
 <summary><strong>POST /workout</strong>
 </summary>
 
