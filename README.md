@@ -1,4 +1,4 @@
-# Messaging web app built with React
+# Workout Planner
 
 ## Table of contents
 
