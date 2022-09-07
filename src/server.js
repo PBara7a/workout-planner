@@ -17,6 +17,7 @@ const equipmentRouter = require("./routers/equipment");
 const workoutRouter = require("./routers/workout");
 const emailRouter = require("./routers/email");
 const userRouter = require("./routers/user");
+const authRouter = require("./routers/auth");
 
 app.use("/data", dataRouter);
 app.use("/exercise", exerciseRouter);
@@ -25,5 +26,6 @@ app.use("/equipment", equipmentRouter);
 app.use("/workout", workoutRouter);
 app.use("/email", emailRouter);
 app.use("/user", userRouter);
+app.use("/", authRouter);
 
 module.exports = app;
