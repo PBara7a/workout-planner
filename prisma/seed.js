@@ -1,8 +1,9 @@
 const dbClient = require("../src/utils/prisma");
-
+const bcrypt = require("bcrypt");
 const exercises = require("../exercises.json");
 
 async function seed() {
+  await createUsers();
   await createEquipments();
   await createBodyParts();
   await createTargets();
@@ -10,6 +11,25 @@ async function seed() {
   await createWorkouts();
 
   process.exit(0);
+}
+
+async function createUsers() {
+  const password = process.env.ADMINPASS;
+
+  const createdUsers = await dbClient.user.createMany({
+    data: [
+      {
+        username: "admin",
+        password: await bcrypt.hash(password, 8),
+      },
+      {
+        username: "testUser",
+        password: await bcrypt.hash("test1", 8),
+      },
+    ],
+  });
+
+  return createdUsers;
 }
 
 async function createEquipments() {
@@ -107,6 +127,7 @@ async function createWorkouts() {
       name: "Workout 1: Upperbody",
       target: "Upperbody",
       notes: "8-12 reps",
+      userId: 1,
       exercises: {
         connect: [
           { id: 99 },
@@ -124,6 +145,7 @@ async function createWorkouts() {
       name: "Workout 2: Lowerbody",
       target: "Lowerbody",
       notes: "8-12 reps",
+      userId: 1,
       exercises: {
         connect: [
           { id: 130 },
@@ -141,6 +163,7 @@ async function createWorkouts() {
       name: "Workout 3: Upperbody",
       target: "Upperbody",
       notes: "8-12 reps",
+      userId: 1,
       exercises: {
         connect: [
           { id: 102 },
@@ -158,6 +181,7 @@ async function createWorkouts() {
       name: "Workout 4: Lowerbody",
       target: "Lowerbody",
       notes: "8-12 reps",
+      userId: 1,
       exercises: {
         connect: [{ id: 130 }, { id: 451 }, { id: 699 }, { id: 1261 }],
       },
