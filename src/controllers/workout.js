@@ -1,6 +1,6 @@
 const dbClient = require("../utils/prisma");
 
-const newWorkout = async (req, res) => {
+const create = async (req, res) => {
   const { name, target, notes, exercises } = req.body;
   const data = { name, target, notes };
 
@@ -24,6 +24,6 @@ const workouts = async (req, res) => {
 };
 
 module.exports = {
-  newWorkout,
+  create,
   workouts,
 };

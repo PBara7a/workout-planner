@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { newWorkout, workouts } = require("../controllers/workout");
+const { create, workouts } = require("../controllers/workout");
 
 router.get("/", workouts);
 
-router.post("/", newWorkout);
+router.post("/", create);
 
 module.exports = router;
