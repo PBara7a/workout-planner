@@ -1,8 +1,8 @@
 const dbClient = require("../utils/prisma");
 
 const create = async (req, res) => {
-  const { name, target, notes, exercises } = req.body;
-  const data = { name, target, notes };
+  const { name, target, notes, exercises, userId } = req.body;
+  const data = { name, target, notes, userId };
 
   data.exercises = {
     connect: exercises.map((ex) => ({

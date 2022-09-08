@@ -15,6 +15,7 @@ The client can be found [here](https://github.com/PBara7a/workout-planner-client
 App built with React, Node.js, Express, Prisma and PostgreSQL.
 
 - SPA built to plan and save my workouts.
+- Authentication implemented from scratch.
 - Client retrieves and sends data through an Express API.
 - Can send workouts by email via SendGrid API.
 
@@ -91,6 +92,7 @@ App built with React, Node.js, Express, Prisma and PostgreSQL.
 	"name": "Burn Fiesta",
 	"target": "Full Body",
 	"notes": "Low weight and max reps",
+	"userId": 1,
 	"exercises": [1, 2]
 }
 ```
@@ -104,6 +106,7 @@ App built with React, Node.js, Express, Prisma and PostgreSQL.
 		"name": "Burn Fiesta",
 		"target": "Full Body",
 		"notes": "Low weight and max reps",
+		"userId": 1,
 		"createdAt": "2022-08-26T10:59:25.037Z",
 		"updatedAt": "2022-08-26T10:59:25.038Z",
 		"exercises": [
@@ -172,6 +175,83 @@ App built with React, Node.js, Express, Prisma and PostgreSQL.
 			"name": "Workout 1: Upperbody",
 			"target": "Upperbody",
 			"notes": "8-12 reps",
+			"createdAt": "2022-08-31T16:17:14.639Z",
+			"updatedAt": "2022-08-31T16:17:14.640Z",
+			"exercises": [
+				{
+					"id": 99,
+					"name": "barbell bench press",
+					"demo": "0025",
+					"equipmentId": 97,
+					"targetId": 9,
+					"bodyPartId": 9,
+					"createdAt": "2022-08-31T16:10:52.907Z",
+					"updatedAt": "2022-08-31T16:10:52.920Z"
+				},
+				{
+					"id": 475,
+					"name": "dumbbell bench seated press",
+					"demo": "0290",
+					"equipmentId": 459,
+					"targetId": 55,
+					"bodyPartId": 55,
+					"createdAt": "2022-08-31T16:10:52.910Z",
+					"updatedAt": "2022-08-31T16:10:52.920Z"
+				},
+				{
+					"id": 481,
+					"name": "dumbbell biceps curl",
+					"demo": "0294",
+					"equipmentId": 459,
+					"targetId": 43,
+					"bodyPartId": 33,
+					"createdAt": "2022-08-31T16:10:52.910Z",
+					"updatedAt": "2022-08-31T16:10:52.920Z"
+				},
+				{
+					"id": 581,
+					"name": "dumbbell lying triceps extension",
+					"demo": "0351",
+					"equipmentId": 459,
+					"targetId": 33,
+					"bodyPartId": 33,
+					"createdAt": "2022-08-31T16:10:52.911Z",
+					"updatedAt": "2022-08-31T16:10:52.920Z"
+				},
+				{
+					"id": 1063,
+					"name": "pull-up",
+					"demo": "0652",
+					"equipmentId": 1,
+					"targetId": 6,
+					"bodyPartId": 6,
+					"createdAt": "2022-08-31T16:10:52.916Z",
+					"updatedAt": "2022-08-31T16:10:52.921Z"
+				}
+			]
+		}
+	]
+}
+```
+
+</details>
+
+<details>
+<summary><strong>GET /workout/:userId</strong>
+
+</summary>
+
+<strong>Example response</strong>
+
+```sh
+{
+	"workouts": [
+		{
+			"id": 1,
+			"name": "Workout 1: Upperbody",
+			"target": "Upperbody",
+			"notes": "8-12 reps",
+			"userId": 1,
 			"createdAt": "2022-08-31T16:17:14.639Z",
 			"updatedAt": "2022-08-31T16:17:14.640Z",
 			"exercises": [
