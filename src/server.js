@@ -10,7 +10,6 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const dataRouter = require("./routers/data");
 const exerciseRouter = require("./routers/exercise");
 const bodyRouter = require("./routers/body");
 const equipmentRouter = require("./routers/equipment");
@@ -19,7 +18,6 @@ const emailRouter = require("./routers/email");
 const userRouter = require("./routers/user");
 const authRouter = require("./routers/auth");
 
-app.use("/data", dataRouter);
 app.use("/exercise", exerciseRouter);
 app.use("/body", bodyRouter);
 app.use("/equipment", equipmentRouter);
