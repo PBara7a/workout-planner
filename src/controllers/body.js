@@ -1,15 +1,28 @@
 const dbClient = require("../utils/prisma");
+const { sendDataResponse, sendMessageResponse } = require("../utils/responses");
 
 const bodyparts = async (req, res) => {
-  const bodyparts = await dbClient.bodyPart.findMany({});
+  try {
+    const foundBodyparts = await dbClient.bodyPart.findMany({});
 
-  res.json({ bodyparts });
+    return sendDataResponse(res, 200, { bodyparts: foundBodyparts });
+  } catch (e) {
+    console.error("Something went wrong", e.message);
+
+    return sendMessageResponse(res, 500, "Unable to get bodyparts");
+  }
 };
 
 const targetMuscles = async (req, res) => {
-  const targets = await dbClient.target.findMany({});
+  try {
+    const foundTargets = await dbClient.target.findMany({});
 
-  res.json({ targets });
+    return sendDataResponse(res, 200, { targets: foundTargets });
+  } catch (e) {
+    console.error("Something went wrong", e.message);
+
+    return sendMessageResponse(res, 500, "Unable to get targets");
+  }
 };
 
 module.exports = {

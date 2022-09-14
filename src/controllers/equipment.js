@@ -1,9 +1,16 @@
 const dbClient = require("../utils/prisma");
+const { sendDataResponse, sendMessageResponse } = require("../utils/responses");
 
 const equipments = async (req, res) => {
-  const equipments = await dbClient.equipment.findMany({});
+  try {
+    const foundEquipments = await dbClient.equipment.findMany({});
 
-  res.json({ equipments });
+    return sendDataResponse(res, 200, { equipments: foundEquipments });
+  } catch (e) {
+    console.error("Something went wrong", e.message);
+
+    return sendMessageResponse(res, 500, "Unable to get equipments");
+  }
 };
 
 module.exports = {
