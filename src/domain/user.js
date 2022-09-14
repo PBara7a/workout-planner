@@ -1,18 +1,25 @@
 const dbClient = require("../utils/prisma");
+const bcrypt = require("bcrypt");
 
 class User {
-  constructor(id, username, password) {
+  constructor(id, username, password, workouts) {
     this.id = id;
     this.username = username;
     this.password = password;
+    this.workouts = workouts;
   }
 
-  static fromJson({ username, password }) {
-    return new User(null, username, password);
+  static async fromJson({ username, password }) {
+    let passwordHash;
+    if (password) {
+      passwordHash = await bcrypt.hash(password, 8);
+    }
+
+    return new User(null, username, passwordHash, null);
   }
 
   static fromDb(user) {
-    return new User(user.id, user.username, user.password);
+    return new User(user.id, user.username, user.password, user.workouts);
   }
 
   toJSON() {
@@ -21,6 +28,7 @@ class User {
         id: this.id,
         username: this.username,
         password: this.password,
+        workouts: this.workouts,
       },
     };
   }
@@ -38,6 +46,10 @@ class User {
 
   static async findById(id) {
     return User._findByUnique("id", id);
+  }
+
+  static async findByUsername(username) {
+    return User._findByUnique("username", username);
   }
 
   static async _findByUnique(key, value) {

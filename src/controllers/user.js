@@ -1,21 +1,45 @@
-const dbClient = require("../utils/prisma");
-const bcrypt = require("bcrypt");
+const { sendDataResponse, sendMessageResponse } = require("../utils/responses");
+const User = require("../domain/user");
+
+const user = async (req, res) => {
+  const id = Number(req.params.id);
+
+  try {
+    const foundUser = await User.findById(id);
+
+    if (!foundUser) {
+      return sendMessageResponse(res, 404, "User not found");
+    }
+
+    return sendDataResponse(res, 200, foundUser);
+  } catch (e) {
+    console.error("Something went wrong", e.message);
+
+    return sendMessageResponse(res, 500, "Unable to get user");
+  }
+};
 
 const create = async (req, res) => {
-  const { username, password } = req.body;
+  const userToCreate = await User.fromJson(req.body);
 
-  const passwordHash = await bcrypt.hash(password, 8);
+  try {
+    const existingUser = await User.findByUsername(userToCreate.username);
 
-  const data = {
-    username,
-    password: passwordHash,
-  };
+    if (existingUser) {
+      return sendMessageResponse(res, 400, "Username already in use");
+    }
 
-  const user = await dbClient.user.create({ data });
+    const createdUser = await userToCreate.save();
 
-  res.json({ user });
+    return sendDataResponse(res, 200, createdUser.toJSON());
+  } catch (e) {
+    console.error("Something went wrong", e.message);
+
+    return sendMessageResponse(res, 500, "Unable to create user");
+  }
 };
 
 module.exports = {
+  user,
   create,
 };
