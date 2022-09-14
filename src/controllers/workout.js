@@ -1,4 +1,5 @@
 const dbClient = require("../utils/prisma");
+const { sendDataResponse, sendMessageResponse } = require("../utils/responses");
 const Workout = require("../domain/workout");
 
 const create = async (req, res) => {
@@ -7,21 +8,25 @@ const create = async (req, res) => {
   try {
     const createdWorkout = await workoutToCreate.save();
 
-    res.status(200).json({ createdWorkout });
+    return sendDataResponse(res, 200, createdWorkout.toJSON());
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    console.error("Something went wrong", e.message);
+
+    return sendMessageResponse(res, 500, "Unable to create workout");
   }
 };
 
 const workouts = async (req, res) => {
   try {
-    const workouts = await dbClient.workout.findMany({
+    const foundWorkouts = await dbClient.workout.findMany({
       include: { exercises: true },
     });
 
-    res.status(200).json({ workouts });
+    return sendDataResponse(res, 200, { workouts: foundWorkouts });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    console.error("Something went wrong", e.message);
+
+    return sendMessageResponse(res, 500, "Unable to get workouts");
   }
 };
 
