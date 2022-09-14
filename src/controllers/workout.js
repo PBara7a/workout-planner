@@ -1,18 +1,16 @@
 const dbClient = require("../utils/prisma");
+const Workout = require("../domain/workout");
 
 const create = async (req, res) => {
-  const { name, target, notes, exercises, userId } = req.body;
-  const data = { name, target, notes, userId };
+  const workoutToCreate = await Workout.fromJson(req.body);
 
-  data.exercises = {
-    connect: exercises.map((ex) => ({
-      id: ex,
-    })),
-  };
+  try {
+    const createdWorkout = await workoutToCreate.save();
 
-  const workout = await dbClient.workout.create({ data });
-
-  res.json({ workout });
+    res.status(200).json({ createdWorkout });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 };
 
 const workouts = async (req, res) => {
