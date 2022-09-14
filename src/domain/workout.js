@@ -25,6 +25,17 @@ class Workout {
     );
   }
 
+  toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      target: this.target,
+      notes: this.notes,
+      exercises: this.exercises,
+      user_id: this.userId,
+    };
+  }
+
   async save() {
     const createdWorkout = await dbClient.workout.create({
       data: {
