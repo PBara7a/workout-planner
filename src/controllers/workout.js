@@ -14,11 +14,15 @@ const create = async (req, res) => {
 };
 
 const workouts = async (req, res) => {
-  const workouts = await dbClient.workout.findMany({
-    include: { exercises: true },
-  });
+  try {
+    const workouts = await dbClient.workout.findMany({
+      include: { exercises: true },
+    });
 
-  res.json({ workouts });
+    res.status(200).json({ workouts });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 };
 
 const userWorkouts = async (req, res) => {
