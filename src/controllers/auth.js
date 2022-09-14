@@ -1,4 +1,5 @@
-const dbClient = require("../utils/prisma");
+const { sendDataResponse, sendMessageResponse } = require("../utils/responses");
+const User = require("../domain/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -9,25 +10,32 @@ const login = async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    return res.json({ error: "Invalid username and/or password" });
+    return sendMessageResponse(
+      res,
+      401,
+      "Invalid email or/and password provided"
+    );
   }
 
   try {
-    const user = await dbClient.user.findUnique({ where: { username } });
-    const isCredentialsValid = await validateCredentials(password, user);
+    const foundUser = await User.findByUsername(username);
+    const isCredentialsValid = await validateCredentials(password, foundUser);
 
     if (!isCredentialsValid) {
-      return res.json({ error: "Invalid username and/or password" });
+      return sendMessageResponse(
+        res,
+        401,
+        "Invalid email or/and password provided"
+      );
     }
 
-    delete user.password;
+    const token = generateJwt(foundUser.id);
 
-    const token = generateJwt(user.id);
-
-    return res.json({ user, token });
+    return sendDataResponse(res, 200, { ...foundUser.toJSON(), token });
   } catch (e) {
-    console.error(e);
-    return res.json({ error: "Unable to login" });
+    console.error("Something went wrong", e.message);
+
+    return sendMessageResponse(res, 500, "Unable to process request");
   }
 };
 
