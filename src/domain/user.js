@@ -58,7 +58,11 @@ class User {
         [key]: value,
       },
       include: {
-        workouts: true,
+        workouts: {
+          include: {
+            exercises: true,
+          },
+        },
       },
     });
 
