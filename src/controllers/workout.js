@@ -30,21 +30,7 @@ const workouts = async (req, res) => {
   }
 };
 
-const userWorkouts = async (req, res) => {
-  const userId = Number(req.params.userId);
-
-  const workouts = await dbClient.workout.findMany({
-    where: {
-      userId,
-    },
-    include: { exercises: true },
-  });
-
-  res.json({ workouts });
-};
-
 module.exports = {
   create,
   workouts,
-  userWorkouts,
 };
