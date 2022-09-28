@@ -2,7 +2,7 @@ const dbClient = require("../utils/prisma");
 const { sendDataResponse, sendMessageResponse } = require("../utils/responses");
 const Workout = require("../domain/workout");
 
-const create = async (req, res) => {
+const createWorkout = async (req, res) => {
   const workoutToCreate = await Workout.fromJson(req.body);
 
   try {
@@ -16,7 +16,7 @@ const create = async (req, res) => {
   }
 };
 
-const workouts = async (req, res) => {
+const getWorkouts = async (req, res) => {
   try {
     const foundWorkouts = await dbClient.workout.findMany({
       include: { exercises: true },
@@ -30,7 +30,22 @@ const workouts = async (req, res) => {
   }
 };
 
+const deleteWorkout = async (req, res) => {
+  const id = Number(req.params.id);
+  console.log("delete");
+  try {
+    await Workout.delete(id);
+
+    sendDataResponse(res, 200);
+  } catch (e) {
+    console.error("Something went wrong", e.message);
+
+    return sendMessageResponse(res, 500, "Unable to delete workout");
+  }
+};
+
 module.exports = {
-  create,
-  workouts,
+  createWorkout,
+  getWorkouts,
+  deleteWorkout,
 };

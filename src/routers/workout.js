@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { create, workouts, userWorkouts } = require("../controllers/workout");
+const workoutController = require("../controllers/workout");
 
-router.get("/", workouts);
+router.get("/", workoutController.getWorkouts);
 
-router.post("/", create);
+router.post("/", workoutController.createWorkout);
+
+router.delete("/:id", workoutController.deleteWorkout);
 
 module.exports = router;

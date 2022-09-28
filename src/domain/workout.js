@@ -57,6 +57,14 @@ class Workout {
     return Workout.fromDb(createdWorkout);
   }
 
+  static async delete(id) {
+    await dbClient.workout.delete({
+      where: {
+        id,
+      },
+    });
+  }
+
   static async findById(id) {
     return Workout._findByUnique("id", id);
   }
