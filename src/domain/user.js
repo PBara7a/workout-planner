@@ -44,6 +44,11 @@ class User {
     return User.fromDb(createdUser);
   }
 
+  static async findUserWorkouts(id) {
+    const foundUser = await User._findByUnique("id", id);
+    return foundUser.workouts;
+  }
+
   static async findById(id) {
     return User._findByUnique("id", id);
   }

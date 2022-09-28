@@ -39,7 +39,22 @@ const create = async (req, res) => {
   }
 };
 
+const getUserWorkouts = async (req, res) => {
+  const id = Number(req.params.id);
+
+  try {
+    const foundUserWorkouts = await User.findUserWorkouts(id);
+
+    return sendDataResponse(res, 200, foundUserWorkouts);
+  } catch (e) {
+    console.error("Something went wrong", e.message);
+
+    return sendMessageResponse(res, 500, "Unable to find user workouts");
+  }
+};
+
 module.exports = {
   user,
   create,
+  getUserWorkouts,
 };
